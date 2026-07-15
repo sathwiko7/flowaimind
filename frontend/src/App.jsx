@@ -1,6 +1,7 @@
-import React from "react";
-import ChatBot from "./components/ChatBot.jsx";
+import Home from "./pages/Home";
 
-export default function App() {
-  return <ChatBot />;
+function App() {
+  return <Home />;
 }
+
+export default App;

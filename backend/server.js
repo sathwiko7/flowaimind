@@ -1,9 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const uploadModule = require("./routes/upload");
+const uploadRoute = uploadModule.router;
 
 const classifyRoute = require("./routes/classify");
 const summarizeRoute = require("./routes/summarize");
+const chatRoute = require("./routes/chat");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -11,15 +14,17 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
 
 app.use(cors({ origin: CORS_ORIGIN }));
 app.use(express.json({ limit: "2mb" }));
+app.use("/api", classifyRoute);
+app.use("/api", summarizeRoute);
+app.use("/api/chat", chatRoute);
+app.use("/api/upload", uploadRoute);
+
 
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", service: "FlowMind AI backend" });
 });
 
-// Feature routes
-app.use("/api", classifyRoute);
-app.use("/api", summarizeRoute);
 
 // 404 fallback
 app.use((req, res) => {
